@@ -5,7 +5,11 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using HPHrisPayroll.API.Data;
+using HPHrisPayroll.API.Data.Emp;
 using HPHrisPayroll.API.Helper;
+using HPHrisPayroll.API.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -13,6 +17,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -34,7 +39,23 @@ namespace HPHrisPayroll.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddDbContext<HpDBContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddJsonOptions(opt => {
+                    opt.SerializerSettings.ReferenceLoopHandling = 
+                        Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
+
+            services.AddCors();            
+            services.AddAutoMapper(typeof(Startup));
+
+            // Repository Patterns
+            services.AddScoped<ICompanyRepo, CompanyRepo>();
+            services.AddScoped<IUsersRepo, UsersRepo>();
+            services.AddScoped<IEmployeeRepo, EmployeeRepo>();
+            services.AddScoped<IEmpNoConfigRepo, EmpNoConfigRepo>();
 
             // JWT Tokens
             services
@@ -50,11 +71,12 @@ namespace HPHrisPayroll.API
                     };
                 });
 
-            // Repository Patterns
-
             // Action Filter / User Audit Log
 
-            //Policy base
+            // Policy base Authorization
+             services.AddAuthorization(options => {
+                options.AddPolicy("Company", policy => policy.RequireRole("Company"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -89,7 +111,7 @@ namespace HPHrisPayroll.API
             app.UseStaticFiles();
 
             // Attachments Files, Images, and etc
-            // CurrentDirectoryHelpers.SetCurrentDirectory();
+            CurrentDirectoryHelpers.SetCurrentDirectory();
             // app.UseStaticFiles(new StaticFileOptions()
             // {                
             //     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Docs")),
@@ -97,12 +119,14 @@ namespace HPHrisPayroll.API
                 
             // });
 
-            app.UseMvc(routes => {
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "Fallback", action = "Index"}
-                );
-            });
+            app.UseMvc();
+
+            // app.UseMvc(routes => {
+            //     routes.MapSpaFallbackRoute(
+            //         name: "spa-fallback",
+            //         defaults: new { controller = "Fallback", action = "Index"}
+            //     );
+            // });
 
             
         }

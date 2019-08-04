@@ -7,19 +7,19 @@ namespace HPHrisPayroll.API.Helper
 {
     public class LogUserActivity: IAsyncActionFilter
     {
-         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var resultContext = await next();
 
             int userId = Convert.ToInt16(resultContext.HttpContext.User
                 .FindFirst(ClaimTypes.NameIdentifier).Value);
             // var logRepo = resultContext.HttpContext.RequestServices.GetService<ILogActivityRepo>();
-            // // var user = await repo.get(appId);
+            // var user = await repo.get(appId);
 
-            // string controllerName = resultContext.RouteData.Values["controller"].ToString();
-            // string methodName = resultContext.RouteData.Values["action"].ToString();
+            string controllerName = resultContext.RouteData.Values["controller"].ToString();
+            string methodName = resultContext.RouteData.Values["action"].ToString();
 
-            // string ip = resultContext.HttpContext.Connection.RemoteIpAddress.ToString();
+            string ip = resultContext.HttpContext.Connection.RemoteIpAddress.ToString();
             
             // AuditLogs auditLog = new AuditLogs() {
             //     UserId = userId,
@@ -31,5 +31,6 @@ namespace HPHrisPayroll.API.Helper
             // logRepo.Add(auditLog);
             // await logRepo.SaveAll();
         }
+        
     }
 }

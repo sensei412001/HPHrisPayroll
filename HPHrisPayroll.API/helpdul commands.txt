@@ -1,0 +1,1 @@
+dotnet ef dbcontext scaffold "Server=ITL-EMALATE-02\SQLEXPRESS;Database=HrisPayroll;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -o Models -c "HpDBContext" -f

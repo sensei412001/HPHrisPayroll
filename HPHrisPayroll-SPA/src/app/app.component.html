@@ -4,104 +4,17 @@
   <!-- <div class="alert alert-app-level">
       ALERT APP LEVEL
   </div> -->
-  <clr-header>
-    <div class="branding">
-      <a href="javascript:void(0)" class="nav-link">
-        <clr-icon shape="capacitor"></clr-icon>        
-        <span class="title">Project Clarity</span>
-      </a>
-    </div>
+  <app-header></app-header>
 
-    <div class="header-nav">
-      <a href="javascript:void()" class="nav-link nav-icon">
-          <clr-icon shape="cloud"></clr-icon>
-      </a>
-      <!-- <a href="#" class="active nav-link nav-icon">
-          <clr-icon shape="folder"></clr-icon>
-      </a> -->
-    </div>
-
-    <div class="header-actions">        
-      
-        <clr-dropdown>
-            <button class="nav-text" clrDropdownTrigger>
-                john.doe@vmware.com
-                <clr-icon shape="caret down"></clr-icon>
-            </button>
-            <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
-                <a href="..." clrDropdownItem>Preferences</a>
-                <a href="..." clrDropdownItem>Log out</a>
-            </clr-dropdown-menu>
-        </clr-dropdown>
-
-        <!-- <clr-dropdown>
-            <button class="nav-icon" clrDropdownTrigger>
-                <clr-icon shape="user"></clr-icon>
-                <clr-icon shape="caret down"></clr-icon>
-            </button>
-            <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
-                <a href="..." clrDropdownItem>About</a>
-                <a href="..." clrDropdownItem>Preferences</a>
-                <a href="..." clrDropdownItem>Log out</a>
-            </clr-dropdown-menu>
-        </clr-dropdown> -->
-
-    </div>
-    
-  </clr-header>
-
-  <nav class="subnav" [clr-nav-level]="1">
-    <ul class="nav">
-      <li class="nav-item">
-          <a class="nav-link active" href="#">Dashboard</a>
-      </li>
-      <li class="nav-item">
-          <a class="nav-link" href="#">Management</a>
-      </li>
-      <li class="nav-item">
-          <a class="nav-link" href="#">Cloud</a>
-      </li>
-      <li class="nav-item">
-          <a class="nav-link" href="#">Tenants</a>
-      </li>
-    </ul>
-  </nav>
-
+  <app-header-nav></app-header-nav>
+  
   <div class="content-container">
-        <nav class="sidenav" [clr-nav-level]="2">
-            <section class="sidenav-content">
-                <a href="..." class="nav-link active">
-                    Nav Element 1
-                </a>
-                <a href="..." class="nav-link">
-                    Nav Element 2
-                </a>
-                <section class="nav-group collapsible">
-                    <input id="tabexample1" type="checkbox">
-                    <label for="tabexample1">Collapsible Nav Element</label>
-                    <ul class="nav-list">
-                        <li><a class="nav-link">Link 1</a></li>
-                        <li><a class="nav-link">Link 2</a></li>
-                    </ul>
-                </section>
-                <section class="nav-group">
-                    <input id="tabexample2" type="checkbox">
-                    <label for="tabexample2">Default Nav Element</label>
-                    <ul class="nav-list">
-                        <li><a class="nav-link">Link 1</a></li>
-                        <li><a class="nav-link">Link 2</a></li>
-                        <li><a class="nav-link active">Link 3</a></li>
-                        <li><a class="nav-link">Link 4</a></li>
-                        <li><a class="nav-link">Link 5</a></li>
-                        <li><a class="nav-link">Link 6</a></li>
-                    </ul>
-                </section>
-            </section>
-        </nav>
+            
+    <clr-vertical-nav [clrVerticalNavCollapsible]="true" [clr-nav-level]="2">
+        <app-side-nav></app-side-nav>
+    </clr-vertical-nav>    
 
-        <div class="content-area">
-              
-        </div>
+    <router-outlet></router-outlet>   
 
   </div>
 
