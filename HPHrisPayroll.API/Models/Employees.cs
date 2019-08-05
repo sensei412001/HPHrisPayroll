@@ -37,13 +37,15 @@ namespace HPHrisPayroll.API.Models
         public string PhilHealthNo { get; set; }
         public DateTime? StartDate { get; set; }
         public long EmpUid { get; set; }
+        public string UpdatedBy { get; set; }
+        public DateTime? DateTimeUpdated { get; set; }
         public string CreatedBy { get; set; }
         public DateTime DateCreated { get; set; }
 
         public virtual Companies CompanyCodeNavigation { get; set; }
         public virtual Departments DeptCodeNavigation { get; set; }
-        public virtual PayrollModes EmployeeNoNavigation { get; set; }
         public virtual EmployeeStatus EmployeeStatusCodeNavigation { get; set; }
+        public virtual PayrollModes PayrollModeNavigation { get; set; }
         public virtual Positions PositionNavigation { get; set; }
         public virtual TaxStatus TaxStatusCodeNavigation { get; set; }
         public virtual ICollection<EmailAddresses> EmailAddresses { get; set; }

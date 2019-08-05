@@ -35,7 +35,7 @@ namespace HPHrisPayroll.API.Models
         public virtual DbSet<TaxStatus> TaxStatus { get; set; }
         public virtual DbSet<UserGroupAccess> UserGroupAccess { get; set; }
         public virtual DbSet<UserGroups> UserGroups { get; set; }
-        public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<Users> Users { get; set; }       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -346,7 +346,11 @@ namespace HPHrisPayroll.API.Models
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
-                entity.Property(e => e.DateLastUpdated).HasColumnType("datetime");
+                entity.Property(e => e.DateLastUpdated)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.EmpNoCounter).HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.Prefix)
                     .IsRequired()
@@ -425,6 +429,8 @@ namespace HPHrisPayroll.API.Models
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
+                entity.Property(e => e.DateTimeUpdated).HasColumnType("datetime");
+
                 entity.Property(e => e.DeptCode)
                     .IsRequired()
                     .HasMaxLength(20)
@@ -496,6 +502,10 @@ namespace HPHrisPayroll.API.Models
                     .HasMaxLength(15)
                     .IsUnicode(false);
 
+                entity.Property(e => e.UpdatedBy)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.HasOne(d => d.CompanyCodeNavigation)
                     .WithMany(p => p.Employees)
                     .HasForeignKey(d => d.CompanyCode)
@@ -507,17 +517,17 @@ namespace HPHrisPayroll.API.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Employees_Departments");
 
-                entity.HasOne(d => d.EmployeeNoNavigation)
-                    .WithOne(p => p.Employees)
-                    .HasForeignKey<Employees>(d => d.EmployeeNo)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Employees_PayrollModes");
-
                 entity.HasOne(d => d.EmployeeStatusCodeNavigation)
                     .WithMany(p => p.Employees)
                     .HasForeignKey(d => d.EmployeeStatusCode)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Employees_EmployeeStatus");
+
+                entity.HasOne(d => d.PayrollModeNavigation)
+                    .WithMany(p => p.Employees)
+                    .HasForeignKey(d => d.PayrollMode)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Employees_PayrollModes");
 
                 entity.HasOne(d => d.PositionNavigation)
                     .WithMany(p => p.Employees)

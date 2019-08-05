@@ -25,6 +25,8 @@ namespace HPHrisPayroll.API.Dtos
         public string PhilHealthNo { get; set; }
         public DateTime? StartDate { get; set; }
         public long EmpUid { get; set; }
+        public string UpdatedBy { get; set; }
+        public DateTime? DateTimeUpdated { get; set; }
         public string CreatedBy { get; set; }
         public DateTime DateCreated { get; set; }
 

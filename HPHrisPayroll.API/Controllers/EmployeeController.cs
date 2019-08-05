@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -87,12 +88,12 @@ namespace HPHrisPayroll.API.Controllers
         public async Task<IActionResult> UpdateRecord(string key, string values)
         {
             var obj = await _repo.GetEmployee(key);
+            if (obj == null)
+                return BadRequest("The employee does not exist!");
+
             JsonConvert.PopulateObject(values, obj);
 
-            // VALIDATION
-            bool isEmpNoExist = _repo.IsEmployeeNoExist(obj.EmployeeNo);
-            if (!isEmpNoExist)
-                return BadRequest("The employee does not exist!");
+            obj.DateTimeUpdated = DateTime.Today;
 
             await _repo.SaveAll();
 
