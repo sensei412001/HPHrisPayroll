@@ -2,12 +2,16 @@ using System.Threading.Tasks;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using HPHrisPayroll.API.Data.Emp;
+using HPHrisPayroll.API.Helper;
 using HPHrisPayroll.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace HPHrisPayroll.API.Controllers
 {
+    [Authorize(Policy = "RequireEmployeeConfigRole")]
+    [ServiceFilter(typeof(LogUserActivity))]
     [Route("api/[controller]")]
     public class EmployeeConfigController : ControllerBase
     {

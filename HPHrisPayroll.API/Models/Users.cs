@@ -5,6 +5,11 @@ namespace HPHrisPayroll.API.Models
 {
     public partial class Users
     {
+        public Users()
+        {
+            UserCompanies = new HashSet<UserCompanies>();
+        }
+
         public string UserName { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
@@ -20,5 +25,6 @@ namespace HPHrisPayroll.API.Models
 
         public virtual Employees EmployeeNoNavigation { get; set; }
         public virtual UserGroups UserGroup { get; set; }
+        public virtual ICollection<UserCompanies> UserCompanies { get; set; }
     }
 }

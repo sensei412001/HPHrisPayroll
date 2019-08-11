@@ -16,6 +16,10 @@ namespace HPHrisPayroll.API.Helper
                 .ForMember(dest => dest.Password, opt => {
                     opt.MapFrom(src => string.Empty);
                 });
+
+            CreateMap<UserGroups, UserGroupDto>();
+
+            CreateMap<UserGroupAccess, UserGroupAccessDto>();
         }
     }
 }

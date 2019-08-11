@@ -12,6 +12,7 @@ namespace HPHrisPayroll.API.Models
             Employees = new HashSet<Employees>();
             JobLevels = new HashSet<JobLevels>();
             PayrollModes = new HashSet<PayrollModes>();
+            UserCompanies = new HashSet<UserCompanies>();
         }
 
         public string CompanyCode { get; set; }
@@ -30,5 +31,6 @@ namespace HPHrisPayroll.API.Models
         public virtual ICollection<Employees> Employees { get; set; }
         public virtual ICollection<JobLevels> JobLevels { get; set; }
         public virtual ICollection<PayrollModes> PayrollModes { get; set; }
+        public virtual ICollection<UserCompanies> UserCompanies { get; set; }
     }
 }

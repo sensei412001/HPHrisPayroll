@@ -11,8 +11,7 @@ namespace HPHrisPayroll.API.Helper
         {
             var resultContext = await next();
 
-            int userId = Convert.ToInt16(resultContext.HttpContext.User
-                .FindFirst(ClaimTypes.NameIdentifier).Value);
+            string username = resultContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             // var logRepo = resultContext.HttpContext.RequestServices.GetService<ILogActivityRepo>();
             // var user = await repo.get(appId);
 

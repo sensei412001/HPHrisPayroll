@@ -12,36 +12,37 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace HPHrisPayroll.API.Controllers
-{        
-    [Authorize(Policy = "RequireCompanyRole")]
+{
+    [Authorize(Policy = "RequireUserGroupsRole")]
     [ServiceFilter(typeof(LogUserActivity))]
     [Route("api/[controller]")]
-    public class CompanyController : ControllerBase
+    public class UserGroupController: ControllerBase
     {
-        private readonly ICompanyRepo _repo;
+        private readonly IUserGroupRepo _repo;
         private readonly IMapper _mapper;
-        public CompanyController(ICompanyRepo repo, IMapper mapper)
+
+        public UserGroupController(IUserGroupRepo repo, IMapper mapper)
         {
-            _mapper = mapper;
             _repo = repo;
+            _mapper = mapper;
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCompany(string code)
+        public async Task<IActionResult> GetUserGroup(int id)
         {
-            var recordFromRepo = await _repo.GetCompany(code);
+            var recordFromRepo = await _repo.GetUserGroup(id);
 
-            var recordToReturn = _mapper.Map<CompanyDto>(recordFromRepo);
+            var recordToReturn = _mapper.Map<UserGroupDto>(recordFromRepo);
 
             return Ok(recordToReturn);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCompanies(DataSourceLoadOptions loadOptions)
+        public async Task<IActionResult> GetUserGroups(DataSourceLoadOptions loadOptions)
         {
-            var recordsFromRepo = await _repo.GetCompanies();
+            var recordsFromRepo = await _repo.GetUserGroups();
 
-            var records =_mapper.Map<IEnumerable<CompanyDto>>(recordsFromRepo);
+            var records =_mapper.Map<IEnumerable<UserGroupDto>>(recordsFromRepo);
 
             var recordsToReturn = DataSourceLoader.Load(
                 records,
@@ -54,40 +55,40 @@ namespace HPHrisPayroll.API.Controllers
         [HttpPost]
         public async Task<IActionResult> InsertRecord(string values)
         {
-            var obj = new Companies();
+            var obj = new UserGroups();
             JsonConvert.PopulateObject(values, obj);
 
             _repo.Add(obj);
             await _repo.SaveAll();
 
-            var objToReturn = _mapper.Map<CompanyDto>(obj);
+            var objToReturn = _mapper.Map<UserGroupDto>(obj);
 
             return Ok(objToReturn);
         }
 
-
         [HttpPut]
-        public async Task<IActionResult> UpdateRecord(string key, string values)
+        public async Task<IActionResult> UpdateRecord(int key, string values)
         {
-            var obj = await _repo.GetCompany(key);
+            var obj = await _repo.GetUserGroup(key);
             JsonConvert.PopulateObject(values, obj);
 
             await _repo.SaveAll();
 
-            var objToReturn = _mapper.Map<CompanyDto>(obj);
+            var objToReturn = _mapper.Map<UserGroupDto>(obj);
 
             return Ok(objToReturn);
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteRecord(string key)
+        public async Task<IActionResult> DeleteRecord(int key)
         {
-            var obj = await _repo.GetCompany(key);
+            var obj = await _repo.GetUserGroup(key);
             _repo.Delete(obj);
             await _repo.SaveAll();
 
             return Ok();
         }
+        
 
     }
 }

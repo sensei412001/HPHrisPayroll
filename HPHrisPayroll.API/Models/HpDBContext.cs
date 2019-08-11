@@ -33,9 +33,10 @@ namespace HPHrisPayroll.API.Models
         public virtual DbSet<Positions> Positions { get; set; }
         public virtual DbSet<Roles> Roles { get; set; }
         public virtual DbSet<TaxStatus> TaxStatus { get; set; }
+        public virtual DbSet<UserCompanies> UserCompanies { get; set; }
         public virtual DbSet<UserGroupAccess> UserGroupAccess { get; set; }
         public virtual DbSet<UserGroups> UserGroups { get; set; }
-        public virtual DbSet<Users> Users { get; set; }       
+        public virtual DbSet<Users> Users { get; set; }        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -764,6 +765,41 @@ namespace HPHrisPayroll.API.Models
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<UserCompanies>(entity =>
+            {
+                entity.HasKey(e => e.UserCompanyId);
+
+                entity.Property(e => e.CompanyCode)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DateCreated)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.UserName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.CompanyCodeNavigation)
+                    .WithMany(p => p.UserCompanies)
+                    .HasForeignKey(d => d.CompanyCode)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UserCompanies_Companies");
+
+                entity.HasOne(d => d.UserNameNavigation)
+                    .WithMany(p => p.UserCompanies)
+                    .HasForeignKey(d => d.UserName)
+                    .HasConstraintName("FK_UserCompanies_Users");
             });
 
             modelBuilder.Entity<UserGroupAccess>(entity =>

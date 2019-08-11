@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using HPHrisPayroll.API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -6,17 +7,18 @@ namespace HPHrisPayroll.API.Data
 {
     public class AuthRepo : IAuthRepo
     {
-        private readonly HpDBContext _context;
+        private readonly HpDBContext _context;        
+
         public AuthRepo(HpDBContext context)
         {
             _context = context;
-
         }
 
         public async Task<Users> Login(string employeeNo, string password)
         {
             var user  = await _context.Users
-                .Include(o => o.EmployeeNoNavigation)
+                .Include(o => o.EmployeeNoNavigation).ThenInclude(email => email.EmailAddresses)
+                .Include(o => o.UserGroup.UserGroupAccess).ThenInclude(uga => uga.Role)
                 .FirstOrDefaultAsync(u => u.EmployeeNo == employeeNo);
 
             if (user == null)
@@ -38,6 +40,15 @@ namespace HPHrisPayroll.API.Data
                 }
                 return true;
             }
+        }
+
+        public async Task<Users> GetUser(string username)
+        {
+            var recordFromRepo = await _context.Users
+                .Include(o => o.EmployeeNoNavigation).ThenInclude(email => email.EmailAddresses)
+                .Include(o => o.UserGroup.UserGroupAccess).ThenInclude(uga => uga.Role)
+                .FirstOrDefaultAsync(u => u.UserName == username);            
+            return recordFromRepo;            
         }
 
     }

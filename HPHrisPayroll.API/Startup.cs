@@ -51,13 +51,18 @@ namespace HPHrisPayroll.API
             services.AddCors();            
             services.AddAutoMapper(typeof(Startup));
 
-            // Repository Patterns
+            // REPOSITORY PATTERNS
+            // ADD REPO HERE
             services.AddScoped<ICompanyRepo, CompanyRepo>();
             services.AddScoped<IUsersRepo, UsersRepo>();
+            services.AddScoped<IUserGroupRepo, UserGroupRepo>();
             services.AddScoped<IEmployeeRepo, EmployeeRepo>();
             services.AddScoped<IEmpNoConfigRepo, EmpNoConfigRepo>();
+            services.AddScoped<IAuthRepo, AuthRepo>();
+            services.AddScoped<IUserGroupAccessRepo, UserGroupAccessRepo>();
 
-            // JWT Tokens
+
+            // JWT Tokens CONFIG
             services
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
@@ -72,11 +77,19 @@ namespace HPHrisPayroll.API
                 });
 
             // Action Filter / User Audit Log
+            // UNCOMMENT TO ADD LOGGING
+            services.AddScoped<LogUserActivity>();
 
             // Policy base Authorization
-             services.AddAuthorization(options => {
-                options.AddPolicy("Company", policy => policy.RequireRole("Company"));
+            services.AddAuthorization(options => {
+                options.AddPolicy("RequireUsersRole", policy => policy.RequireRole("Users"));
+                options.AddPolicy("RequireUserGroupsRole", policy => policy.RequireRole("UserGroups"));
+                options.AddPolicy("RequireUserGroupAccessRole", policy => policy.RequireRole("UserGroupAccess"));
+                options.AddPolicy("RequireCompanyRole", policy => policy.RequireRole("Company"));
+                options.AddPolicy("RequireEmployeeRole", policy => policy.RequireRole("Employee"));
+                options.AddPolicy("RequireEmployeeConfigRole", policy => policy.RequireRole("EmployeeConfig"));
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
