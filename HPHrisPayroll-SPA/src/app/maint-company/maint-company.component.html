@@ -90,9 +90,9 @@
                     </dxi-validation-rule>
                 </dxi-column>
 
-                <dxi-column dataField="createdBy" caption="CreatedBy" [visible]="false" [allowEditing]="false"></dxi-column>
+                <dxi-column dataField="createdBy" caption="CreatedBy" [visible]="false" [allowEditing]="false" [formItem]="{ visible: false }"></dxi-column>
 
-                <dxi-column dataField="dateCreated" dataType="date" [visible]="false" [allowEditing]="false"></dxi-column>
+                <dxi-column dataField="dateCreated" dataType="date" [visible]="false" [allowEditing]="false" [formItem]="{ visible: false }"></dxi-column>
 
                 <dxo-summary>
                     <dxi-total-item column="companyCode" summaryType="count"> </dxi-total-item>

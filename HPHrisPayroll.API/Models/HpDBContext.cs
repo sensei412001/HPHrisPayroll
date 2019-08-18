@@ -27,16 +27,20 @@ namespace HPHrisPayroll.API.Models
         public virtual DbSet<EmployeeStatus> EmployeeStatus { get; set; }
         public virtual DbSet<Employees> Employees { get; set; }
         public virtual DbSet<EmploymentHistory> EmploymentHistory { get; set; }
+        public virtual DbSet<Hdmftable> Hdmftable { get; set; }
         public virtual DbSet<JobLevels> JobLevels { get; set; }
         public virtual DbSet<PayrollModes> PayrollModes { get; set; }
         public virtual DbSet<PhoneNumbers> PhoneNumbers { get; set; }
+        public virtual DbSet<Phtable> Phtable { get; set; }
         public virtual DbSet<Positions> Positions { get; set; }
         public virtual DbSet<Roles> Roles { get; set; }
+        public virtual DbSet<Ssstable> Ssstable { get; set; }
         public virtual DbSet<TaxStatus> TaxStatus { get; set; }
+        public virtual DbSet<TaxTable> TaxTable { get; set; }
         public virtual DbSet<UserCompanies> UserCompanies { get; set; }
         public virtual DbSet<UserGroupAccess> UserGroupAccess { get; set; }
         public virtual DbSet<UserGroups> UserGroups { get; set; }
-        public virtual DbSet<Users> Users { get; set; }        
+        public virtual DbSet<Users> Users { get; set; }    
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -377,11 +381,6 @@ namespace HPHrisPayroll.API.Models
                     .IsUnicode(false)
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.CompanyCode)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.CreatedBy)
                     .IsRequired()
                     .HasMaxLength(50)
@@ -581,6 +580,17 @@ namespace HPHrisPayroll.API.Models
                     .HasConstraintName("FK_EmploymentHistory_Employees");
             });
 
+            modelBuilder.Entity<Hdmftable>(entity =>
+            {
+                entity.ToTable("HDMFTable");
+
+                entity.Property(e => e.HdmftableId).HasColumnName("HDMFTableId");
+
+                entity.Property(e => e.EffectiveDateFrom).HasColumnType("datetime");
+
+                entity.Property(e => e.EffectiveDateTo).HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<JobLevels>(entity =>
             {
                 entity.HasKey(e => e.JobLevelCode);
@@ -684,6 +694,17 @@ namespace HPHrisPayroll.API.Models
                     .HasConstraintName("FK_PhoneNumbers_Employees");
             });
 
+            modelBuilder.Entity<Phtable>(entity =>
+            {
+                entity.ToTable("PHTable");
+
+                entity.Property(e => e.PhtableId).HasColumnName("PHTableId");
+
+                entity.Property(e => e.EffectiveDateFrom).HasColumnType("datetime");
+
+                entity.Property(e => e.EffectiveDateTo).HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<Positions>(entity =>
             {
                 entity.HasKey(e => e.Position);
@@ -743,6 +764,17 @@ namespace HPHrisPayroll.API.Models
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<Ssstable>(entity =>
+            {
+                entity.ToTable("SSSTable");
+
+                entity.Property(e => e.SsstableId).HasColumnName("SSSTableId");
+
+                entity.Property(e => e.EffectiveDateFrom).HasColumnType("datetime");
+
+                entity.Property(e => e.EffectiveDateTo).HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<TaxStatus>(entity =>
             {
                 entity.HasKey(e => e.TaxStatusCode);
@@ -765,6 +797,13 @@ namespace HPHrisPayroll.API.Models
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<TaxTable>(entity =>
+            {
+                entity.Property(e => e.EffectiveDateFrom).HasColumnType("datetime");
+
+                entity.Property(e => e.EffectiveDateTo).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<UserCompanies>(entity =>

@@ -1,55 +1,115 @@
-<a clrVerticalNavLink [routerLink]="['/maint-company']" routerLinkActive="active">
+<clr-vertical-nav [clrVerticalNavCollapsible]="true" [clr-nav-level]="2" style="height: 100% !important;">
+
+<a clrVerticalNavLink [routerLink]="['/Home']" routerLinkActive="active">
     <clr-icon clrVerticalNavIcon shape="user"></clr-icon>
-    Company
+    201
 </a>
+
 <a clrVerticalNavLink routerLink="./electric" routerLinkActive="active">
     <clr-icon clrVerticalNavIcon shape="bolt"></clr-icon>
-    Electric
+    Time Keeping
 </a>
+
 <a clrVerticalNavLink routerLink="./poison" routerLinkActive="active">
     <clr-icon clrVerticalNavIcon shape="sad-face"></clr-icon>
-    Poison
+    Leaves
 </a>
+
+<a clrVerticalNavLink routerLink="./poison" routerLinkActive="active">
+    <clr-icon clrVerticalNavIcon shape="sad-face"></clr-icon>
+    Overtime
+</a>
+
+<a clrVerticalNavLink routerLink="./poison" routerLinkActive="active">
+    <clr-icon clrVerticalNavIcon shape="sad-face"></clr-icon>
+    Adjustments
+</a>
+
 <a clrVerticalNavLink routerLink="./grass" routerLinkActive="active">
     <clr-icon clrVerticalNavIcon shape="bug"></clr-icon>
-    Grass
-</a>
-<a clrVerticalNavLink routerLink="./fighting" routerLinkActive="active">
-    <clr-icon clrVerticalNavIcon shape="shield"></clr-icon>
-    Fighting
-</a>
-<a clrVerticalNavLink routerLink="./credit" routerLinkActive="active">
-    <clr-icon clrVerticalNavIcon shape="certificate"></clr-icon>
-    Credit
+    Payroll
 </a>
 
-<!-- 
-<section class="sidenav-content">
-    <a href="..." class="nav-link" >
-        Nav Element 1
-    </a>
-    <a href="..." class="nav-link">
-        Nav Element 2
-    </a>
-    <section class="nav-group collapsible">
-        <input id="tabexample1" type="checkbox">
-        <label for="tabexample1">Collapsible Nav Element</label>
-        <ul class="nav-list">
-            <li ><a class="nav-link">Link 1</a></li>
-            <li><a class="nav-link">Link 2</a></li>
-        </ul>
-    </section>
-    <section class="nav-group" >
-        <input id="tabexample2" type="checkbox">
-        <label for="tabexample2">Default Nav Element</label>
-        <ul class="nav-list">
-            <li><a class="nav-link" [routerLink]="['/maint-company']" routerLinkActive="active">Link 1</a></li>
-            <li><a class="nav-link">Link 2</a></li>
-            <li><a class="nav-link">Link 3</a></li>
-            <li><a class="nav-link">Link 4</a></li>
-            <li><a class="nav-link">Link 5</a></li>
-            <li><a class="nav-link">Link 6</a></li>
-        </ul>
-    </section>
+<clr-vertical-nav-group   
+    *appHasRole="['Company']"
+    routerLinkActive="active">
+    <clr-icon shape="cog" clrVerticalNavIcon></clr-icon>
+    Config
+    <clr-vertical-nav-group-children>       
+        <a *appHasRole="['Company']" 
+            clrVerticalNavLink 
+            [routerLink]="['/maint-company']" 
+            routerLinkActive="active">            
+            Companies
+        </a>
+         <a clrVerticalNavLink
+            [routerLink]="['/home']"
+            routerLinkActive="active">
+            Departments
+        </a>
+        <a clrVerticalNavLink
+            [routerLink]="['/sample-crud']"
+            routerLinkActive="active">
+            Employee Numbering
+        </a>
+        <a clrVerticalNavLink
+            [routerLink]="['/sample-crud']"
+            routerLinkActive="active">
+            Job Levels
+        </a>
+        <a clrVerticalNavLink
+            [routerLink]="['/sample-crud']"
+            routerLinkActive="active">
+            Payroll Modes
+        </a>
 
-</section> -->
+        <a clrVerticalNavLink
+            [routerLink]="['/sample-crud']"
+            routerLinkActive="active">
+            Tax Table
+        </a>
+
+        <a clrVerticalNavLink
+            [routerLink]="['/sample-crud']"
+            routerLinkActive="active">
+            SSS
+        </a>
+
+        <a clrVerticalNavLink
+            [routerLink]="['/sample-crud']"
+            routerLinkActive="active">
+            HDMF
+        </a>
+
+        <a clrVerticalNavLink
+            [routerLink]="['/sample-crud']"
+            routerLinkActive="active">
+            Phil Health
+        </a>
+       
+    </clr-vertical-nav-group-children>
+</clr-vertical-nav-group>
+
+
+<clr-vertical-nav-group       
+    *appHasRole="['UserGroups']"
+    routerLinkActive="active">
+    <clr-icon shape="users" clrVerticalNavIcon></clr-icon>
+    Users Management
+    <clr-vertical-nav-group-children> 
+        <a  *appHasRole="['Users']" 
+            clrVerticalNavLink 
+            [routerLink]="['/users']" 
+            routerLinkActive="active">            
+            Users
+        </a>        
+        <a *appHasRole="['UserGroups']" 
+            clrVerticalNavLink 
+            [routerLink]="['/user-groups']" 
+            routerLinkActive="active">            
+            User Groups
+        </a>
+    </clr-vertical-nav-group-children>
+</clr-vertical-nav-group>
+
+</clr-vertical-nav>

@@ -1,0 +1,62 @@
+<div class="login-wrapper">
+    <form class="login" action="your-action" (submit)="onFormSubmit($event)">
+        
+      <section class="title">
+            <h3 class="welcome">Welcome to</h3>
+            Project Clarity
+            <h5 class="hint">Please enter your credential to enter the system</h5>
+        </section>
+        <div class="login-group">
+
+          <dx-form 
+            [formData]="loginModel"
+            [labelLocation]="labelLocation"
+            [showColonAfterLabel]="showColon"
+            >
+              <dxi-item dataField="username" [editorOptions]="{ placeholder: 'Employee Number' }">
+                <dxo-label [visible]="false"></dxo-label>
+                <dxi-validation-rule
+                  type="required"
+                  message="Please enter your employee number.">
+                </dxi-validation-rule>
+              </dxi-item>
+              <dxi-item dataField="password" [editorOptions]="{ placeholder: 'Enter your password', mode: 'password' }">
+                <dxo-label [visible]="false"></dxo-label>
+                <dxi-validation-rule
+                  type="required"
+                  message="Please enter your password.">
+                </dxi-validation-rule>
+              </dxi-item>             
+
+              <dxi-item *ngIf="showError" itemType="emtpy">
+
+                  <div class="error active">
+                      Invalid user name or password
+                  </div>
+                  <br/>
+
+              </dxi-item>
+            
+             
+              <dxi-item 
+                [colSpan]="2"
+                itemType="button"
+                horizontalAlignment="left"
+                [buttonOptions]="loginButtonOptions">
+              </dxi-item>
+              
+          </dx-form> 
+
+        </div>
+               
+    </form>
+
+
+    <dx-load-panel 
+      [shading]="true"
+      message="processing..."
+      shadingColor="rgba(0,0,0,0.4)"
+      [(visible)]="isLoadingPanelVisible">
+    </dx-load-panel>
+
+</div>

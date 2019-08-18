@@ -40,33 +40,19 @@ namespace HPHrisPayroll.API.Controllers
             return Ok(recordToReturn);
         }
 
-        [HttpGet("UserGroupAccess/{userGroupId}")]
-        public async Task<IActionResult> UserGroupAccess(int userGroupId, DataSourceLoadOptions loadOptions)
+        [HttpGet("Access/{userGroupId}")]
+        public async Task<IActionResult> Access(int userGroupId, DataSourceLoadOptions loadOptions)
         {            
             // VALIDATIONS
             if (userGroupId == 0)
                 return BadRequest("Invalid user group!");
 
-            var groupAccess = await _repo.GetUserGroupAccess(userGroupId);                        
-            var roles = await _repo.GetRoles();
-
-            var userGroupAccess = (
-                from x in roles join y in groupAccess on x.RoleId equals y.RoleId into jointable
-                from z in jointable.DefaultIfEmpty()
-                select new  UserGroupAccessDto {
-                    RoleId = x.RoleId,
-                    RoleName = x.RoleName,
-                    HasAccess = z != null,
-                    UserGroupId = userGroupId,
-                    UserGroupAccessId = z != null ? z.UserGroupAccessId : 0,
-                    CreatedBy = z != null ? z.CreatedBy : string.Empty,
-                    DateCreated = z != null ? z.DateCreated as DateTime? : null,
-                }
-
-            );
+            var recordsFromRepo = await _repo.GetUserGroupAccess(userGroupId);
+            
+            var mappedRecords = _mapper.Map<IEnumerable<UserGroupAccessDto>>(recordsFromRepo);
 
             var recordsToReturn = DataSourceLoader.Load(
-                userGroupAccess,
+                mappedRecords,
                 loadOptions
             );
 
@@ -74,33 +60,18 @@ namespace HPHrisPayroll.API.Controllers
             return Ok(recordsToReturn);
         }
        
-        [HttpPost("AddAccess")]
-        public async Task<IActionResult> AddAccess(string values)
-        {
-            var obj = new UserGroupAccess();
-            JsonConvert.PopulateObject(values, obj);
-
-            // VALIDATE IF EXISTING
-            if (_repo.IsUserGroupAccessExist(obj.UserGroupId, obj.RoleId))
-                return BadRequest("The role already exist in this User Group.");
-
-            obj.CreatedBy = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            _repo.Add(obj);
-            await _repo.SaveAll();
-
-            return Ok();
-        }
-
-        [HttpDelete("RemoveAccess")]
-        public async Task<IActionResult> RemoveAccess(int key)
+        [HttpPut]
+        public async Task<IActionResult> UpdateRecord(int key, string values)
         {
             var obj = await _repo.GetUserGroupAccessById(key);
-            _repo.Delete(obj);
+            JsonConvert.PopulateObject(values, obj);
+
             await _repo.SaveAll();
 
-            return Ok();
-        }
+            var objToReturn = _mapper.Map<UserGroupAccessDto>(obj);
 
+            return Ok(objToReturn);
+        }
+        
     }
 }

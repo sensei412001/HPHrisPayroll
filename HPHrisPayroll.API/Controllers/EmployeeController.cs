@@ -57,6 +57,21 @@ namespace HPHrisPayroll.API.Controllers
             return Ok(recordsToReturn);
         }
 
+        [HttpGet("ForLookup")]
+        public async Task<IActionResult> ForLookup(DataSourceLoadOptions loadOptions)
+        {
+            var recordsFromRepo = await _repo.GetEmployees();            
+
+            var records =_mapper.Map<IEnumerable<EmployeeForLookupDto>>(recordsFromRepo);
+
+            var recordsToReturn = DataSourceLoader.Load(
+                records,
+                loadOptions
+            );
+
+            return Ok(recordsToReturn);
+        }
+
         [HttpPost]
         public async Task<IActionResult> InsertRecord(string values)
         {

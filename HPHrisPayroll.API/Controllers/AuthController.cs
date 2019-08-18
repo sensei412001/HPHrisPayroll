@@ -94,7 +94,7 @@ namespace HPHrisPayroll.API.Controllers
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            var user = _mapper.Map<UserDto>(userFromRepo);
+            var user = _mapper.Map<UserDtoForLoginResponse>(userFromRepo);
 
             return Ok(new
             {

@@ -1,21 +1,24 @@
+<ng-container *ngIf="loggedIn(); else notAuthorized">
+  <clr-main-container>
 
-<clr-main-container>
-
-  <!-- <div class="alert alert-app-level">
-      ALERT APP LEVEL
-  </div> -->
-  <app-header></app-header>
-
-  <app-header-nav></app-header-nav>
+    <!-- <div class="alert alert-app-level">
+        ALERT APP LEVEL
+    </div> -->
+    <app-header></app-header>
   
-  <div class="content-container">
-            
-    <clr-vertical-nav [clrVerticalNavCollapsible]="true" [clr-nav-level]="2">
-        <app-side-nav></app-side-nav>
-    </clr-vertical-nav>    
+    <app-header-nav></app-header-nav>
+    
+    <div class="content-container">
 
-    <router-outlet></router-outlet>   
+      <app-side-nav></app-side-nav>
+  
+      <router-outlet></router-outlet>   
+  
+    </div>
+  
+  </clr-main-container>
+</ng-container>
 
-  </div>
-
-</clr-main-container>
+<ng-template #notAuthorized> 
+  <app-login></app-login>
+</ng-template>

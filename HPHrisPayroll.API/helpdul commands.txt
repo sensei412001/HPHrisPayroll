@@ -1,1 +1,10 @@
 dotnet ef dbcontext scaffold "Server=ITL-EMALATE-02\SQLEXPRESS;Database=HrisPayroll;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -o Models -c "HpDBContext" -f
+
+
+JwtModule.forRoot({
+    config: {
+    tokenGetter: tokenGetter,
+    whitelistedDomains: ['localhost:5000'],
+    blacklistedRoutes: ['localhost:5000/api/auth']
+    }
+}),

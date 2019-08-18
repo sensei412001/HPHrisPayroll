@@ -38,6 +38,15 @@ namespace HPHrisPayroll.API.Data.Emp
             return records;
         }
 
+        public async Task<IEnumerable<Employees>> GetActiveEmployees()
+        {
+            var records = await _context.Employees
+                .Where(o => o.EmployeeStatusCode != "Resigned")
+                .ToListAsync();
+
+            return records;
+        }
+
         public async Task<Employees> GetEmployee(string employeeNo)
         {
             var record = await _context.Employees

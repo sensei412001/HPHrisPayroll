@@ -33,6 +33,7 @@ namespace HPHrisPayroll.API.Data
         {
             var users = await _context.Users
                 .Include(o => o.EmployeeNoNavigation).ThenInclude(sub => sub.EmployeeAddresses)
+                .Include(o => o.UserGroup)
                 .ToListAsync();
 
             return users;

@@ -34,6 +34,7 @@ namespace HPHrisPayroll.API.Data
         public async Task<IEnumerable<UserGroupAccess>> GetUserGroupAccess(int userGroupId)
         {                       
             var recordsFromRepo = await _context.UserGroupAccess
+                .Include(o => o.Role)
                 .Where(o => o.UserGroupId == userGroupId)
                 .ToListAsync();
                    

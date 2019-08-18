@@ -16,14 +16,16 @@ namespace HPHrisPayroll.API.Controllers
     [Authorize(Policy = "RequireUserGroupsRole")]
     [ServiceFilter(typeof(LogUserActivity))]
     [Route("api/[controller]")]
-    public class UserGroupController: ControllerBase
+    public class UserGroupController : ControllerBase
     {
         private readonly IUserGroupRepo _repo;
         private readonly IMapper _mapper;
+        private readonly IUserGroupAccessRepo _groupAccessRepo;
 
-        public UserGroupController(IUserGroupRepo repo, IMapper mapper)
-        {
-            _repo = repo;
+        public UserGroupController(IUserGroupRepo repo, IUserGroupAccessRepo groupAccessRepo, IMapper mapper)
+        {            
+            _repo = repo;            
+            _groupAccessRepo = groupAccessRepo;
             _mapper = mapper;
         }
 
@@ -42,7 +44,7 @@ namespace HPHrisPayroll.API.Controllers
         {
             var recordsFromRepo = await _repo.GetUserGroups();
 
-            var records =_mapper.Map<IEnumerable<UserGroupDto>>(recordsFromRepo);
+            var records = _mapper.Map<IEnumerable<UserGroupDto>>(recordsFromRepo);
 
             var recordsToReturn = DataSourceLoader.Load(
                 records,
@@ -60,6 +62,22 @@ namespace HPHrisPayroll.API.Controllers
 
             _repo.Add(obj);
             await _repo.SaveAll();
+
+            //insert all roles to group access table            
+            var roles = await _groupAccessRepo.GetRoles();
+            foreach(var role in roles)
+            {
+                UserGroupAccess rowObj = new UserGroupAccess();
+                rowObj.UserGroupId = obj.UserGroupId;
+                rowObj.RoleId = role.RoleId;
+                rowObj.CreatedBy = obj.CreatedBy;
+                
+                 _groupAccessRepo.Add(rowObj);
+                await _groupAccessRepo.SaveAll();
+            }
+            
+           
+            
 
             var objToReturn = _mapper.Map<UserGroupDto>(obj);
 
@@ -88,7 +106,7 @@ namespace HPHrisPayroll.API.Controllers
 
             return Ok();
         }
-        
+
 
     }
 }

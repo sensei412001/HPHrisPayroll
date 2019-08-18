@@ -11,6 +11,7 @@ namespace HPHrisPayroll.API.Data.Emp
         void Delete<T>(T entity) where T: class;
         Task<bool> SaveAll();
         Task<IEnumerable<Employees>> GetEmployees();
+        Task<IEnumerable<Employees>> GetActiveEmployees();
         Task<Employees> GetEmployee(string employeeNo);
         bool IsEmployeeNoExist(string employeeNo);
         

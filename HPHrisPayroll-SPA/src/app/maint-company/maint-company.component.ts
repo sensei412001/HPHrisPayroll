@@ -2,6 +2,7 @@ import { createStore } from 'devextreme-aspnet-data-nojquery';
 import CustomStore from 'devextreme/data/custom_store';
 import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { AuthService } from '../_services/auth.service';
 
 @Component({
   selector: 'app-maint-company',
@@ -12,7 +13,7 @@ export class MaintCompanyComponent implements OnInit {
   url = environment.apiUrl + 'Company';
   dataSource: CustomStore;
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
     this.popDataGrid();
@@ -25,10 +26,10 @@ export class MaintCompanyComponent implements OnInit {
       insertUrl: this.url,
       updateUrl: this.url,
       deleteUrl: this.url,
-      // onBeforeSend: function(r, s) {
-      //   const token = localStorage.getItem('token');
-      //   s.headers = { Authorization: 'Bearer ' + token };
-      // }
+      onBeforeSend: function(r, s) {
+        const token = localStorage.getItem('token');
+        s.headers = { Authorization: 'Bearer ' + token };
+      }
     });
   }
 
@@ -48,8 +49,7 @@ export class MaintCompanyComponent implements OnInit {
     const yy = dte.getFullYear();
 
     e.data.dateCreated = mm + '/' + dd + '/' + yy;
-    e.data.createdBy = 'juand';
-    // e.data.createdBy = this.authService.decodedToken.nameid;
+    e.data.createdBy = this.authService.decodedToken.nameid;
   }
 
 }
