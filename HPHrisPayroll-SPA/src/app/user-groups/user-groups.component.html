@@ -100,53 +100,52 @@
       [dragEnabled]="true"
       [closeOnOutsideClick]="true"
       [(visible)]="popupVisible">
-        <div *dxTemplate="let data of 'content'">
+        <div *dxTemplate="let data of 'content'">        
 
-            <dx-data-grid
-              [dataSource]="dataSourceAccess"
-              [remoteOperations]="true"
-              [rowAlternationEnabled]="true"                 
-              showBorders="true"
-              [columnHidingEnabled]="true"
+          <dx-data-grid
+            [dataSource]="dataSourceAccess"
+            [remoteOperations]="true"
+            [rowAlternationEnabled]="true"                 
+            showBorders="true"
+            [columnHidingEnabled]="true"
             >
+  
+            <dxo-filter-row [visible]="true"></dxo-filter-row>
+            <dxo-header-filter [visible]="true"></dxo-header-filter>
 
-              <dxo-filter-row [visible]="true"></dxo-filter-row>
-              <dxo-header-filter [visible]="true"></dxo-header-filter>
+            <dxo-paging [pageSize]="20"></dxo-paging>
 
-              <dxo-paging [pageSize]="20"></dxo-paging>
+            <dxo-pager
+              [showPageSizeSelector]="true"
+              [allowedPageSizes]="[20,40]"
+              [showInfo]="true"
+              >
+            </dxo-pager>
 
-              <dxo-pager
-                [showPageSizeSelector]="true"
-                [allowedPageSizes]="[20,40]"
-                [showInfo]="true"
-                >
-              </dxo-pager>
+            <dxo-selection mode="single"></dxo-selection>
 
-              <dxo-selection mode="single"></dxo-selection>
+            <dxo-editing
+              mode="cell"
+              [allowUpdating]="true"
+              >
+            </dxo-editing>
 
-              <dxo-editing
-                mode="cell"
-                [allowUpdating]="true"
-                >
-              </dxo-editing>
+            <dxi-column 
+              dataField="userGroupAccessId" 
+              caption="Id" 
+              [visible]="false"
+              >                  
+            </dxi-column>
 
-              <dxi-column 
-                dataField="userGroupAccessId" 
-                caption="Id" 
-                [visible]="false"
-                >                  
-              </dxi-column>
+            <dxi-column dataField="roleId" [visible]="false"></dxi-column>
+            <dxi-column dataField="roleName" caption="Roles" [allowEditing]="false"></dxi-column>
+            <dxi-column dataField="hasAccess" [allowFiltering]="false" [allowSorting]="false" ></dxi-column>
 
-              <dxi-column dataField="roleId" [visible]="false"></dxi-column>
-              <dxi-column dataField="roleName" caption="Roles" [allowEditing]="false"></dxi-column>
-              <dxi-column dataField="hasAccess" [allowFiltering]="false" [allowSorting]="false" ></dxi-column>
+            <dxo-summary>
+                <dxi-total-item column="hasAccess" summaryType="count"> </dxi-total-item>
+            </dxo-summary>
 
-              <dxo-summary>
-                  <dxi-total-item column="hasAccess" summaryType="count"> </dxi-total-item>
-              </dxo-summary>
-
-            </dx-data-grid>
-          
+          </dx-data-grid>
           
 
         </div>

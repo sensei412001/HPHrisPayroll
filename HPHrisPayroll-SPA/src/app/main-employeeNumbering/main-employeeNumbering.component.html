@@ -1,0 +1,91 @@
+
+<div class="content-area">  
+
+    <div class="card">
+        <div class="card-header">
+            Setup Employee Number
+        </div>
+        <div class="card-block">                             
+            <!-- DATA GRID -->
+            <dx-data-grid
+                [dataSource]="dataSource"
+                [remoteOperations]="true"
+                [rowAlternationEnabled]="true"                 
+                showBorders="true"
+                [columnHidingEnabled]="true"
+                (onInitNewRow)="onInitNewRow($event)"                
+                >
+                <dxo-filter-row [visible]="true"></dxo-filter-row>
+                <dxo-header-filter [visible]="true"></dxo-header-filter>
+                <dxo-group-panel [visible]="false"></dxo-group-panel>
+
+                <dxo-export [enabled]="true" fileName="Companies" [allowExportSelectedData]="false"></dxo-export>
+
+                <dxo-paging [pageSize]="10"></dxo-paging>
+                <dxo-pager
+                    [showPageSizeSelector]="true"
+                    [allowedPageSizes]="[10, 20]"
+                    [showInfo]="true"
+                    >
+                </dxo-pager>
+
+                <dxo-column-chooser [enabled]="true" mode="select"></dxo-column-chooser>
+                <dxo-selection mode="single"></dxo-selection>
+
+                <dxo-editing
+                    mode="form"
+                    [allowAdding]="true"
+                    [allowUpdating]="false"
+                    [allowDeleting]="true"
+                    >
+                </dxo-editing>
+
+                <dxi-column 
+                  dataField="employeeNoConfigId" 
+                  caption="Id"                   
+                  [allowEditing]="false" 
+                  [formItem]="{ visible: false }"
+                  [hidingPriority]="0"
+                  >
+                </dxi-column>
+
+                <dxi-column dataField="companyCode" caption="Company" >
+                    <dxi-validation-rule
+                        type="required"
+                        message="The email is required."
+                    >
+                    </dxi-validation-rule>
+                    <dxo-lookup
+                        [dataSource]="dataSourceCompanies"
+                        valueExpr="companyCode"
+                        displayExpr="companyName"
+                    ></dxo-lookup>                    
+                </dxi-column>
+
+                <dxi-column dataField="prefix" [hidingPriority]="1">
+                  <dxi-validation-rule
+                      type="required"
+                      message="The prefix is required."
+                  >
+                  </dxi-validation-rule>
+                </dxi-column>            
+
+                <dxi-column dataField="empNoCounter" caption="Counter" dataType="number">
+                    <dxi-validation-rule
+                        type="required"
+                        message="The counter is required."
+                    >
+                    </dxi-validation-rule>
+                </dxi-column>                             
+
+                <dxo-summary>
+                    <dxi-total-item column="employeeNoConfigId" summaryType="count"> </dxi-total-item>
+                </dxo-summary>
+            </dx-data-grid>
+    
+        </div>                
+        
+    </div>
+            
+              
+</div>

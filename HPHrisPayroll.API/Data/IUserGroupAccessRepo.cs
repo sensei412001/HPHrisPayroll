@@ -12,7 +12,7 @@ namespace HPHrisPayroll.API.Data
         Task<bool> SaveAll();
         Task<IEnumerable<UserGroupAccess>> GetUserGroupAccess(int userGroupId);
         Task<UserGroupAccess> GetUserGroupAccessById(int id);        
-        Task<IEnumerable<Roles>> GetRoles();
+        Task<IEnumerable<Roles>> GetRoles();        
 
         bool IsUserGroupAccessExist(int userGroupId, int roleId);
         

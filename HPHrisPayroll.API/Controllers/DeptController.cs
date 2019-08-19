@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
-using HPHrisPayroll.API.Data;
+using HPHrisPayroll.API.Data.Maint;
 using HPHrisPayroll.API.Dtos;
 using HPHrisPayroll.API.Helper;
 using HPHrisPayroll.API.Models;
@@ -12,51 +12,36 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace HPHrisPayroll.API.Controllers
-{        
-    [Authorize(Policy = "RequireCompanyRole")]
+{
+    [Authorize(Policy = "RequireDeptRole")]
     [ServiceFilter(typeof(LogUserActivity))]
     [Route("api/[controller]")]
-    public class CompanyController : ControllerBase
+    public class DeptController : ControllerBase
     {
-        private readonly ICompanyRepo _repo;
+        private readonly IDeptRepo _repo;
         private readonly IMapper _mapper;
-        public CompanyController(ICompanyRepo repo, IMapper mapper)
+        public DeptController(IDeptRepo repo, IMapper mapper)
         {
             _mapper = mapper;
             _repo = repo;
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCompany(string code)
+        public async Task<IActionResult> GetDepartment(string code)
         {
-            var recordFromRepo = await _repo.GetCompany(code);
+            var recordFromRepo = await _repo.GetDepartment(code);
 
-            var recordToReturn = _mapper.Map<CompanyDto>(recordFromRepo);
+            var recordToReturn = _mapper.Map<DepartmentDto>(recordFromRepo);
 
             return Ok(recordToReturn);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCompanies(DataSourceLoadOptions loadOptions)
+        public async Task<IActionResult> GetDepartments(DataSourceLoadOptions loadOptions)
         {
-            var recordsFromRepo = await _repo.GetCompanies();
+            var recordsFromRepo = await _repo.GetDepartments();
 
-            var records =_mapper.Map<IEnumerable<CompanyDto>>(recordsFromRepo);
-
-            var recordsToReturn = DataSourceLoader.Load(
-                records,
-                loadOptions
-            );
-
-            return Ok(recordsToReturn);
-        }
-
-        [HttpGet("LookUp")]
-        public async Task<IActionResult> LookUp(DataSourceLoadOptions loadOptions)
-        {
-            var recordsFromRepo = await _repo.GetCompanies();
-
-            var records =_mapper.Map<IEnumerable<CompanyForLookupDto>>(recordsFromRepo);
+            var records =_mapper.Map<IEnumerable<DepartmentDto>>(recordsFromRepo);
 
             var recordsToReturn = DataSourceLoader.Load(
                 records,
@@ -69,13 +54,13 @@ namespace HPHrisPayroll.API.Controllers
         [HttpPost]
         public async Task<IActionResult> InsertRecord(string values)
         {
-            var obj = new Companies();
+            var obj = new Departments();
             JsonConvert.PopulateObject(values, obj);
 
             _repo.Add(obj);
             await _repo.SaveAll();
 
-            var objToReturn = _mapper.Map<CompanyDto>(obj);
+            var objToReturn = _mapper.Map<DepartmentDto>(obj);
 
             return Ok(objToReturn);
         }
@@ -84,12 +69,12 @@ namespace HPHrisPayroll.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateRecord(string key, string values)
         {
-            var obj = await _repo.GetCompany(key);
+            var obj = await _repo.GetDepartment(key);
             JsonConvert.PopulateObject(values, obj);
 
             await _repo.SaveAll();
 
-            var objToReturn = _mapper.Map<CompanyDto>(obj);
+            var objToReturn = _mapper.Map<DepartmentDto>(obj);
 
             return Ok(objToReturn);
         }
@@ -97,7 +82,7 @@ namespace HPHrisPayroll.API.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteRecord(string key)
         {
-            var obj = await _repo.GetCompany(key);
+            var obj = await _repo.GetDepartment(key);
             _repo.Delete(obj);
             await _repo.SaveAll();
 

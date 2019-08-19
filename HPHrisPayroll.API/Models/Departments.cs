@@ -14,7 +14,7 @@ namespace HPHrisPayroll.API.Models
         public string Description { get; set; }
         public string CompanyCode { get; set; }
         public string CreatedBy { get; set; }
-        public DateTime DateTimeCreated { get; set; }
+        public DateTime DateCreated { get; set; }
 
         public virtual Companies CompanyCodeNavigation { get; set; }
         public virtual ICollection<Employees> Employees { get; set; }

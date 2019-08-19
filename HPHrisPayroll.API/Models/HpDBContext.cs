@@ -40,7 +40,7 @@ namespace HPHrisPayroll.API.Models
         public virtual DbSet<UserCompanies> UserCompanies { get; set; }
         public virtual DbSet<UserGroupAccess> UserGroupAccess { get; set; }
         public virtual DbSet<UserGroups> UserGroups { get; set; }
-        public virtual DbSet<Users> Users { get; set; }    
+        public virtual DbSet<Users> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -142,7 +142,7 @@ namespace HPHrisPayroll.API.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.DateTimeCreated)
+                entity.Property(e => e.DateCreated)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 

@@ -33,7 +33,7 @@ namespace HPHrisPayroll.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser(string username)
+        public async Task<IActionResult> GetUser(int username)
         {
             var userFromRepo = await _repo.GetUser(username);
 
@@ -70,6 +70,10 @@ namespace HPHrisPayroll.API.Controllers
 
             if (string.IsNullOrEmpty(obj.UserName))
                 obj.UserName = obj.EmployeeNo;
+
+            var user = await _repo.GetUser(obj.UserName);
+            if (user != null)
+                return BadRequest("The username you selected already exist!");
 
             string randomPassword = obj.Syek;
             byte[] passwordHash, passwordSalt;

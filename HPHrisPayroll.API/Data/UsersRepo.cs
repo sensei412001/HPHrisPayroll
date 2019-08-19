@@ -48,6 +48,15 @@ namespace HPHrisPayroll.API.Data
             return user;
         }
 
+        public async Task<Users> GetUser(int uid)
+        {
+            var user = await _context.Users
+                .Include(o => o.EmployeeNoNavigation).ThenInclude(sub => sub.EmployeeAddresses)
+                .FirstOrDefaultAsync(o => o.UserUid == uid);
+
+            return user;
+        }
+
 
 
     }

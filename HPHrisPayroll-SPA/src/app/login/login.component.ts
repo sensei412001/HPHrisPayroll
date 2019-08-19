@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
   @ViewChild(DxFormComponent, {static: false}) form: DxFormComponent;
   loginModel: LoginModel = { username: '', password: '' };
   labelLocation: string;
+  loadPanelMessage = 'Authenticating';
   showColon: boolean;
   loginButtonOptions: any = {
     text: 'LOGIN',
@@ -31,15 +32,18 @@ export class LoginComponent implements OnInit {
   }
 
   onFormSubmit(e) {
+    this.loadPanelMessage = 'Authenticating...';
     this.isLoadingPanelVisible = true;
+
     const formData = this.form.instance.option('formData');
     this.authService.login(formData).subscribe(() => {
-
-    }, error => {
-      this.showError = true;
-      this.isLoadingPanelVisible = false;
-    }, () => {
-      this.isLoadingPanelVisible = false;
+      this.loadPanelMessage = 'Authorizing...';
+      }, error => {
+        this.showError = true;
+        this.isLoadingPanelVisible = false;
+      }, () => {
+        this.loadPanelMessage = 'Authorizing...';
+        // this.isLoadingPanelVisible = false;
     });
 
   }

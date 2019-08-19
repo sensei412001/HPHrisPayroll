@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using DevExtreme.AspNet.Data;
@@ -75,9 +76,6 @@ namespace HPHrisPayroll.API.Controllers
                  _groupAccessRepo.Add(rowObj);
                 await _groupAccessRepo.SaveAll();
             }
-            
-           
-            
 
             var objToReturn = _mapper.Map<UserGroupDto>(obj);
 
@@ -95,7 +93,7 @@ namespace HPHrisPayroll.API.Controllers
             var objToReturn = _mapper.Map<UserGroupDto>(obj);
 
             return Ok(objToReturn);
-        }
+        }        
 
         [HttpDelete]
         public async Task<IActionResult> DeleteRecord(int key)

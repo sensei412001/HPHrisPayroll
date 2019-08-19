@@ -43,7 +43,9 @@ namespace HPHrisPayroll.API.Data
 
         public async Task<UserGroupAccess> GetUserGroupAccessById(int id)
         {
-            var record = await _context.UserGroupAccess.FirstOrDefaultAsync(o => o.UserGroupAccessId == id);
+            var record = await _context.UserGroupAccess
+                .Include(o => o.UserGroup)
+                .FirstOrDefaultAsync(o => o.UserGroupAccessId == id);
 
             return record;
         }

@@ -14,12 +14,12 @@ namespace HPHrisPayroll.API.Data
             _context = context;
         }
 
-        public async Task<Users> Login(string employeeNo, string password)
+        public async Task<Users> Login(string username, string password)
         {
             var user  = await _context.Users
                 .Include(o => o.EmployeeNoNavigation).ThenInclude(email => email.EmailAddresses)
                 .Include(o => o.UserGroup.UserGroupAccess).ThenInclude(uga => uga.Role)
-                .FirstOrDefaultAsync(u => u.EmployeeNo == employeeNo);
+                .FirstOrDefaultAsync(u => u.UserName == username);
 
             if (user == null)
                 return null; 

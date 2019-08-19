@@ -47,7 +47,7 @@ namespace HPHrisPayroll.API.Controllers
             if (userGroupId == 0)
                 return BadRequest("Invalid user group!");
 
-            var recordsFromRepo = await _repo.GetUserGroupAccess(userGroupId);
+            var recordsFromRepo = await _repo.GetUserGroupAccess(userGroupId);            
             
             var mappedRecords = _mapper.Map<IEnumerable<UserGroupAccessDto>>(recordsFromRepo);
 
@@ -66,11 +66,56 @@ namespace HPHrisPayroll.API.Controllers
             var obj = await _repo.GetUserGroupAccessById(key);
             JsonConvert.PopulateObject(values, obj);
 
+            // check for new roles and add to selected user group
+            int userGroupId = obj.UserGroupId;
+            string createdBy = obj.UserGroup.CreatedBy;
+
+            var roles = await _repo.GetRoles();
+            var access = await _repo.GetUserGroupAccess(userGroupId);
+
+            if (roles.Count() != access.Count())
+            {
+                var rolesToAdd = roles.Where(o => !access.Select(b => b.RoleId).Contains(o.RoleId));
+                foreach(var role in rolesToAdd)
+                {
+                    UserGroupAccess rowObj = new UserGroupAccess();
+                    rowObj.UserGroupId = userGroupId;
+                    rowObj.RoleId = role.RoleId;
+                    rowObj.CreatedBy = createdBy;
+                    
+                    _repo.Add(rowObj);
+                }
+            }                                   
+            
+            // save has access update and new roles to add in the user group access
             await _repo.SaveAll();
 
             var objToReturn = _mapper.Map<UserGroupAccessDto>(obj);
 
             return Ok(objToReturn);
+        }
+
+        private async void AddNewRolesToUserGroupAccess(int userGroupId, string createdBy)
+        {
+            var roles = await _repo.GetRoles();
+            var access = await _repo.GetUserGroupAccess(userGroupId);
+
+            if (roles.Count() == access.Count())
+                return;
+
+            // get roles that don't exist yet in table group access
+            var rolesToAdd = roles.Where(o => !access.Select(b => b.RoleId).Contains(o.RoleId));
+
+            foreach(var role in rolesToAdd)
+            {
+                UserGroupAccess rowObj = new UserGroupAccess();
+                rowObj.UserGroupId = userGroupId;
+                rowObj.RoleId = role.RoleId;
+                rowObj.CreatedBy = createdBy;
+                
+                _repo.Add(rowObj);
+                await _repo.SaveAll();
+            }
         }
         
     }

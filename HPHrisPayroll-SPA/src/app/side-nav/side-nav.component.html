@@ -42,16 +42,18 @@
             routerLinkActive="active">            
             Companies
         </a>
-         <a clrVerticalNavLink
-            [routerLink]="['/home']"
-            routerLinkActive="active">
+        <a *appHasRole="['Departments']" 
+            clrVerticalNavLink 
+            [routerLink]="['/maint-departments']" 
+            routerLinkActive="active">            
             Departments
         </a>
-        <a clrVerticalNavLink
-            [routerLink]="['/sample-crud']"
-            routerLinkActive="active">
+        <a *appHasRole="['EmployeeConfig']" 
+            clrVerticalNavLink 
+            [routerLink]="['/maint-employeeNumbering']" 
+            routerLinkActive="active">            
             Employee Numbering
-        </a>
+        </a>       
         <a clrVerticalNavLink
             [routerLink]="['/sample-crud']"
             routerLinkActive="active">

@@ -9,6 +9,9 @@ namespace HPHrisPayroll.API.Helper
         public AutoMapperProfiles()
         {
             CreateMap<Companies, CompanyDto>();
+            CreateMap<Companies, CompanyForLookupDto>();
+
+            CreateMap<Departments, DepartmentDto>();
 
             CreateMap<Employees, EmployeeDto>();
             CreateMap<Employees, EmployeeForLookupDto>()
@@ -18,9 +21,6 @@ namespace HPHrisPayroll.API.Helper
             
 
             CreateMap<Users, UserDto>()
-                .ForMember(dest => dest.Password, opt => {
-                    opt.MapFrom(src => string.Empty);
-                })
                 .ForMember(dest => dest.UserGroupName, opt => {
                     opt.MapFrom(src => src.UserGroup.UserGroupName);
                 })

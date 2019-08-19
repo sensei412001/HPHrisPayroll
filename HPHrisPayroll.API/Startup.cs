@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using HPHrisPayroll.API.Data;
 using HPHrisPayroll.API.Data.Emp;
+using HPHrisPayroll.API.Data.Maint;
 using HPHrisPayroll.API.Helper;
 using HPHrisPayroll.API.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -60,6 +61,7 @@ namespace HPHrisPayroll.API
             services.AddScoped<IEmpNoConfigRepo, EmpNoConfigRepo>();
             services.AddScoped<IAuthRepo, AuthRepo>();
             services.AddScoped<IUserGroupAccessRepo, UserGroupAccessRepo>();
+            services.AddScoped<IDeptRepo, DeptRepo>();
 
 
             // JWT Tokens CONFIG
@@ -86,6 +88,7 @@ namespace HPHrisPayroll.API
                 options.AddPolicy("RequireUserGroupsRole", policy => policy.RequireRole("UserGroups"));
                 options.AddPolicy("RequireUserGroupAccessRole", policy => policy.RequireRole("UserGroupAccess"));
                 options.AddPolicy("RequireCompanyRole", policy => policy.RequireRole("Company"));
+                options.AddPolicy("RequireDeptRole", policy => policy.RequireRole("Departments"));
                 options.AddPolicy("RequireEmployeeRole", policy => policy.RequireRole("Employee"));
                 options.AddPolicy("RequireEmployeeConfigRole", policy => policy.RequireRole("EmployeeConfig"));
             });

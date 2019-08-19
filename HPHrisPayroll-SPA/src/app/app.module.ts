@@ -12,7 +12,11 @@ import { HttpClientModule } from '@angular/common/http';
 import {
    DxDataGridModule, DxFormModule, DxPopoverModule, DxPopupModule,
    DxLoadIndicatorModule, DxLoadPanelModule, DxScrollViewModule,
-   DxTabPanelModule
+   DxTabPanelModule,
+   DxTextBoxModule,
+   DxNumberBoxModule,
+   DxDateBoxModule,
+   DxButtonModule
 } from 'devextreme-angular';
 
 import { SampleCrudComponent } from './sample-crud/sample-crud.component';
@@ -29,6 +33,8 @@ import { ErrorInterceptorProvider } from './_services/error.interceptor';
 import { HasRoleDirective } from './_directives/hasRole.directive';
 import { UserGroupsComponent } from './user-groups/user-groups.component';
 import { UsersComponent } from './users/users.component';
+import { MaintDepartmentsComponent } from './maint-departments/maint-departments.component';
+import { MainEmployeeNumberingComponent } from './main-employeeNumbering/main-employeeNumbering.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -46,15 +52,21 @@ export function tokenGetter() {
       MaintCompanyComponent,
       LoginComponent,
       UserGroupsComponent,
-      UsersComponent
+      UsersComponent,
+      MaintDepartmentsComponent,
+      MainEmployeeNumberingComponent
    ],
    imports: [
       BrowserModule,
       HttpClientModule,
       BrowserAnimationsModule,
       ClarityModule,
-      DxDataGridModule,
       FormsModule,
+      DxDataGridModule,
+      DxTextBoxModule,
+      DxNumberBoxModule,
+      DxDateBoxModule,
+      DxButtonModule,
       DxFormModule,
       DxPopupModule,
       DxLoadIndicatorModule,
@@ -64,9 +76,9 @@ export function tokenGetter() {
       RouterModule.forRoot(appRoutes),
       JwtModule.forRoot({
          config: {
-            tokenGetter: tokenGetter,
-            whitelistedDomains: ['localhost:5000'],
-            blacklistedRoutes: ['localhost:5000/api/auth']
+         tokenGetter: tokenGetter,
+         whitelistedDomains: ['localhost:5000'],
+         blacklistedRoutes: ['localhost:5000/api/auth']
          }
      }),
    ],

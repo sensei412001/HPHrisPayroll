@@ -35,10 +35,10 @@ export class MaintCompanyComponent implements OnInit {
 
   onEditorPreparing(e: any) {
     if (e.parentType === 'dataRow' && e.dataField === 'companyCode' && !e.row.inserted) {
-        e.editorOptions.disabled = true;
+        e.editorOptions.readOnly = true;
     }
     if (e.parentType === 'dataRow' && e.dataField === 'dateCreated' && !e.row.inserted) {
-        e.editorOptions.disabled = true;
+        e.editorOptions.readOnly = true;
     }
   }
 

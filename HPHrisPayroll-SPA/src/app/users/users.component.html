@@ -14,6 +14,7 @@
               showBorders="true"
               [columnHidingEnabled]="true"
               (onInitNewRow)="onInitNewRow($event)"
+              (onEditorPreparing)="onEditorPreparing($event)"
               >
                 <dxo-filter-row [visible]="true"></dxo-filter-row>
                 <dxo-header-filter [visible]="true"></dxo-header-filter>
@@ -40,13 +41,31 @@
                     >
                 </dxo-editing>
 
-                <dxi-column dataField="userName" [formItem]="{ readonly: true }">
+                <dxi-column dataField="userName" >
                   <dxi-validation-rule
                         type="required"
                         message="The username field is required."
                     >
                     </dxi-validation-rule>
                 </dxi-column>
+
+                <dxi-column dataField="syek" 
+                  [editorOptions]="{ mode: passwordMode }"                  
+                  caption="Password" 
+                  [visible]="false" 
+                  [formItem]="{visible: pwrdColVisible}">
+                    <dxi-validation-rule
+                      type="required"
+                      message="The password field is required."
+                    >
+                    </dxi-validation-rule>
+                    <dxi-validation-rule 
+                        type="pattern"
+                        [pattern]="passwordPattern"
+                        message="Must be min 8 characters, atlest 1 number, and special and upper case character.">
+                    </dxi-validation-rule>
+                    <dxi-button name="today" location="after" [options]="passwordButton"></dxi-button>
+                  </dxi-column>
 
                 <dxi-column dataField="userGroupId" caption="Access">
                     <dxi-validation-rule
@@ -92,7 +111,7 @@
 
                 <dxi-column dataField="dateCreated" dataType="date" [visible]="false" [allowEditing]="false"></dxi-column>
 
-                <dxi-column type="buttons">
+                <dxi-column type="buttons" >
 
                   <dxi-button 
                     text="View Access"
