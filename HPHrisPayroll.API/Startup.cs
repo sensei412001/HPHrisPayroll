@@ -42,7 +42,6 @@ namespace HPHrisPayroll.API
         {
 
             services.AddDbContext<HpDBContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(opt => {
                     opt.SerializerSettings.ReferenceLoopHandling = 

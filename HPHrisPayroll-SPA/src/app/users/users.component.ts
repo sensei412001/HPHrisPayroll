@@ -141,4 +141,10 @@ export class UsersComponent implements OnInit {
 
   }
 
+  setUsernameValue(rowData: any, value: any): void {
+    rowData.userName = value;
+    (<any>this).defaultSetCellValue(rowData, value);
+  }
+
+
 }

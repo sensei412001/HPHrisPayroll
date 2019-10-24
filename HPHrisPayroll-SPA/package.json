@@ -26,7 +26,7 @@
     "@webcomponents/custom-elements": "^1.0.0",
     "core-js": "^2.5.4",
     "devextreme": "^19.1.4",
-    "devextreme-angular": "^19.1.4",
+    "devextreme-angular": "19.1.5",
     "devextreme-aspnet-data-nojquery": "^2.4.2",
     "rxjs": "~6.5.2",
     "tslib": "^1.9.0",

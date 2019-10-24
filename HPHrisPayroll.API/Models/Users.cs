@@ -19,6 +19,7 @@ namespace HPHrisPayroll.API.Models
         public long UserUid { get; set; }
         public DateTime? LastActive { get; set; }
         public string Syek { get; set; }
+        public string PhotoUrl { get; set; }
         public DateTime? PasswordExpiration { get; set; }
         public string CreatedBy { get; set; }
         public DateTime DateCreated { get; set; }

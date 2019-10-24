@@ -16,14 +16,17 @@ namespace HPHrisPayroll.API.Models
         }
 
         public virtual DbSet<AuditLogs> AuditLogs { get; set; }
+        public virtual DbSet<Banks> Banks { get; set; }
         public virtual DbSet<Companies> Companies { get; set; }
         public virtual DbSet<Departments> Departments { get; set; }
         public virtual DbSet<EmailAddresses> EmailAddresses { get; set; }
         public virtual DbSet<EmailTypes> EmailTypes { get; set; }
         public virtual DbSet<EmergencyContacts> EmergencyContacts { get; set; }
         public virtual DbSet<EmployeeAddresses> EmployeeAddresses { get; set; }
+        public virtual DbSet<EmployeeDependents> EmployeeDependents { get; set; }
         public virtual DbSet<EmployeeEducation> EmployeeEducation { get; set; }
         public virtual DbSet<EmployeeNoConfig> EmployeeNoConfig { get; set; }
+        public virtual DbSet<EmployeePhotos> EmployeePhotos { get; set; }
         public virtual DbSet<EmployeeStatus> EmployeeStatus { get; set; }
         public virtual DbSet<Employees> Employees { get; set; }
         public virtual DbSet<EmploymentHistory> EmploymentHistory { get; set; }
@@ -71,6 +74,30 @@ namespace HPHrisPayroll.API.Models
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Banks>(entity =>
+            {
+                entity.HasKey(e => e.BankCode);
+
+                entity.Property(e => e.BankCode)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.BankName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DateCreated)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
             });
 
             modelBuilder.Entity<Companies>(entity =>
@@ -304,6 +331,49 @@ namespace HPHrisPayroll.API.Models
                     .HasConstraintName("FK_EmployeeAddresses_Employees");
             });
 
+            modelBuilder.Entity<EmployeeDependents>(entity =>
+            {
+                entity.HasKey(e => e.DependentId);
+
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DateCreated)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.EmployeeNo)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LastName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MiddleName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Relationship)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.EmployeeNoNavigation)
+                    .WithMany(p => p.EmployeeDependents)
+                    .HasForeignKey(d => d.EmployeeNo)
+                    .HasConstraintName("FK_EmployeeDependents_Employees");
+            });
+
             modelBuilder.Entity<EmployeeEducation>(entity =>
             {
                 entity.HasKey(e => e.EducationRefId);
@@ -366,10 +436,48 @@ namespace HPHrisPayroll.API.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Year)
+                    .HasMaxLength(2)
+                    .IsUnicode(false);
+
                 entity.HasOne(d => d.CompanyCodeNavigation)
                     .WithMany(p => p.EmployeeNoConfig)
                     .HasForeignKey(d => d.CompanyCode)
                     .HasConstraintName("FK_EmployeeNoConfig_Companies");
+            });
+
+            modelBuilder.Entity<EmployeePhotos>(entity =>
+            {
+                entity.HasKey(e => e.PhotoId);
+
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DateCreated)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.EmployeeNo)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Extension)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Location)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.EmployeeNoNavigation)
+                    .WithMany(p => p.EmployeePhotos)
+                    .HasForeignKey(d => d.EmployeeNo)
+                    .HasConstraintName("FK_EmployeePhotos_Employees");
             });
 
             modelBuilder.Entity<EmployeeStatus>(entity =>
@@ -914,9 +1022,9 @@ namespace HPHrisPayroll.API.Models
 
                 entity.Property(e => e.PasswordExpiration).HasColumnType("datetime");
 
-                entity.Property(e => e.PasswordHash).IsRequired();
-
-                entity.Property(e => e.PasswordSalt).IsRequired();
+                entity.Property(e => e.PhotoUrl)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Syek)
                     .HasMaxLength(100)

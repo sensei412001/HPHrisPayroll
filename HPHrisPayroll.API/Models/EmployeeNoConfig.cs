@@ -9,6 +9,7 @@ namespace HPHrisPayroll.API.Models
         public string Prefix { get; set; }
         public long EmpNoCounter { get; set; }
         public string CompanyCode { get; set; }
+        public string Year { get; set; }
         public string UpdatedBy { get; set; }
         public DateTime? DateLastUpdated { get; set; }
 

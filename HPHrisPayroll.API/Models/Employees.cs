@@ -10,7 +10,9 @@ namespace HPHrisPayroll.API.Models
             EmailAddresses = new HashSet<EmailAddresses>();
             EmergencyContacts = new HashSet<EmergencyContacts>();
             EmployeeAddresses = new HashSet<EmployeeAddresses>();
+            EmployeeDependents = new HashSet<EmployeeDependents>();
             EmployeeEducation = new HashSet<EmployeeEducation>();
+            EmployeePhotos = new HashSet<EmployeePhotos>();
             EmploymentHistory = new HashSet<EmploymentHistory>();
             PhoneNumbers = new HashSet<PhoneNumbers>();
             Users = new HashSet<Users>();
@@ -51,7 +53,9 @@ namespace HPHrisPayroll.API.Models
         public virtual ICollection<EmailAddresses> EmailAddresses { get; set; }
         public virtual ICollection<EmergencyContacts> EmergencyContacts { get; set; }
         public virtual ICollection<EmployeeAddresses> EmployeeAddresses { get; set; }
+        public virtual ICollection<EmployeeDependents> EmployeeDependents { get; set; }
         public virtual ICollection<EmployeeEducation> EmployeeEducation { get; set; }
+        public virtual ICollection<EmployeePhotos> EmployeePhotos { get; set; }
         public virtual ICollection<EmploymentHistory> EmploymentHistory { get; set; }
         public virtual ICollection<PhoneNumbers> PhoneNumbers { get; set; }
         public virtual ICollection<Users> Users { get; set; }

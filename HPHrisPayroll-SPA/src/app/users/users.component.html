@@ -39,9 +39,22 @@
                     [allowUpdating]="true"
                     [allowDeleting]="true"
                     >
-                </dxo-editing>
+                </dxo-editing>                
 
-                <dxi-column dataField="userName" >
+                <dxi-column dataField="employeeNo" caption="Employee" [setCellValue]="setUsernameValue">
+                    <dxi-validation-rule
+                        type="required"
+                        message="Please select an employee"
+                    >
+                    </dxi-validation-rule>
+                    <dxo-lookup
+                      [dataSource]="dataSourceEmp"
+                      valueExpr="employeeNo"
+                      displayExpr="fullName"
+                    ></dxo-lookup>
+                </dxi-column>
+
+                <dxi-column dataField="userName" placeholder="default is employee number">
                   <dxi-validation-rule
                         type="required"
                         message="The username field is required."
@@ -65,7 +78,7 @@
                         message="Must be min 8 characters, atlest 1 number, and special and upper case character.">
                     </dxi-validation-rule>
                     <dxi-button name="today" location="after" [options]="passwordButton"></dxi-button>
-                  </dxi-column>
+                </dxi-column>
 
                 <dxi-column dataField="userGroupId" caption="Access">
                     <dxi-validation-rule
@@ -77,19 +90,6 @@
                       [dataSource]="dataSourceUserGroup"
                       valueExpr="userGroupId"
                       displayExpr="userGroupName"
-                    ></dxo-lookup>
-                </dxi-column>
-
-                <dxi-column dataField="employeeNo" caption="Employee">
-                    <dxi-validation-rule
-                        type="required"
-                        message="Please select an employee"
-                    >
-                    </dxi-validation-rule>
-                    <dxo-lookup
-                      [dataSource]="dataSourceEmp"
-                      valueExpr="employeeNo"
-                      displayExpr="fullName"
                     ></dxo-lookup>
                 </dxi-column>
 
@@ -113,13 +113,6 @@
 
                 <dxi-column type="buttons" >
 
-                  <dxi-button 
-                    text="View Access"
-                    hint="View Access"
-                    [onClick]="showAccess"
-                    >
-                  </dxi-button>
-
                   <dxi-button
                     name="edit"
                     text="Edit"
@@ -129,6 +122,13 @@
                   <dxi-button
                     name="delete"
                     text="Delete"
+                    >
+                  </dxi-button>
+
+                  <dxi-button 
+                    text="Access"
+                    hint="View Access"
+                    [onClick]="showAccess"
                     >
                   </dxi-button>
                           
