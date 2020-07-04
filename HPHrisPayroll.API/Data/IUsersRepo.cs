@@ -12,5 +12,6 @@ namespace HPHrisPayroll.API.Data
         Task<IEnumerable<Users>> GetUsers();
         Task<Users> GetUser(string username);
         Task<Users> GetUser(int uid);
+
     }
 }

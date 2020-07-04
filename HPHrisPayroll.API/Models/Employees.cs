@@ -21,6 +21,7 @@ namespace HPHrisPayroll.API.Models
         public string EmployeeNo { get; set; }
         public string CompanyCode { get; set; }
         public string DeptCode { get; set; }
+        public string CurrentStore { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
@@ -45,6 +46,7 @@ namespace HPHrisPayroll.API.Models
         public DateTime DateCreated { get; set; }
 
         public virtual Companies CompanyCodeNavigation { get; set; }
+        public virtual Stores CurrentStoreNavigation { get; set; }
         public virtual Departments DeptCodeNavigation { get; set; }
         public virtual EmployeeStatus EmployeeStatusCodeNavigation { get; set; }
         public virtual PayrollModes PayrollModeNavigation { get; set; }

@@ -72,6 +72,11 @@ namespace HPHrisPayroll.API.Controllers
             var obj = new Companies();
             JsonConvert.PopulateObject(values, obj);
 
+            //if code is existing
+            // bool brtn = true;
+            // if (brtn)
+            //     return BadRequest("The code already exist!");
+
             _repo.Add(obj);
             await _repo.SaveAll();
 

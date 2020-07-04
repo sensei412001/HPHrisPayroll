@@ -47,7 +47,7 @@ namespace HPHrisPayroll.API.Controllers
                 return BadRequest("Your account is disabled! Please contact HR thru their helpdesk system!");
 
             if (userFromRepo.PasswordExpiration <= DateTime.Today)
-                return BadRequest("You password is expired!");
+                return BadRequest("You password has expired!");
 
             string employeeNo = userFromRepo.EmployeeNo;
             string givenName = 

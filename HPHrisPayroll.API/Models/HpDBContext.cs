@@ -25,7 +25,9 @@ namespace HPHrisPayroll.API.Models
         public virtual DbSet<EmployeeAddresses> EmployeeAddresses { get; set; }
         public virtual DbSet<EmployeeDependents> EmployeeDependents { get; set; }
         public virtual DbSet<EmployeeEducation> EmployeeEducation { get; set; }
+        public virtual DbSet<EmployeeFiles> EmployeeFiles { get; set; }
         public virtual DbSet<EmployeeNoConfig> EmployeeNoConfig { get; set; }
+        public virtual DbSet<EmployeePayouts> EmployeePayouts { get; set; }
         public virtual DbSet<EmployeePhotos> EmployeePhotos { get; set; }
         public virtual DbSet<EmployeeStatus> EmployeeStatus { get; set; }
         public virtual DbSet<Employees> Employees { get; set; }
@@ -38,12 +40,13 @@ namespace HPHrisPayroll.API.Models
         public virtual DbSet<Positions> Positions { get; set; }
         public virtual DbSet<Roles> Roles { get; set; }
         public virtual DbSet<Ssstable> Ssstable { get; set; }
+        public virtual DbSet<Stores> Stores { get; set; }
         public virtual DbSet<TaxStatus> TaxStatus { get; set; }
         public virtual DbSet<TaxTable> TaxTable { get; set; }
         public virtual DbSet<UserCompanies> UserCompanies { get; set; }
         public virtual DbSet<UserGroupAccess> UserGroupAccess { get; set; }
         public virtual DbSet<UserGroups> UserGroups { get; set; }
-        public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<Users> Users { get; set; }       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -414,6 +417,37 @@ namespace HPHrisPayroll.API.Models
                     .HasConstraintName("FK_EmployeeEducation_Employees");
             });
 
+            modelBuilder.Entity<EmployeeFiles>(entity =>
+            {
+                entity.HasKey(e => e.EmployeeFileId);
+
+                entity.Property(e => e.EmployeeFileId).ValueGeneratedNever();
+
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DateCreated)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.EmployeeNo)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Extension)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Filename)
+                    .IsRequired()
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<EmployeeNoConfig>(entity =>
             {
                 entity.Property(e => e.CompanyCode)
@@ -444,6 +478,47 @@ namespace HPHrisPayroll.API.Models
                     .WithMany(p => p.EmployeeNoConfig)
                     .HasForeignKey(d => d.CompanyCode)
                     .HasConstraintName("FK_EmployeeNoConfig_Companies");
+            });
+
+            modelBuilder.Entity<EmployeePayouts>(entity =>
+            {
+                entity.HasKey(e => e.PayoutId);
+
+                entity.Property(e => e.PayoutId).ValueGeneratedNever();
+
+                entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.BatchNo)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CompanyCode)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DateCreated).HasColumnType("datetime");
+
+                entity.Property(e => e.DeptCode)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.EmployeeNo)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PayrollMode)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<EmployeePhotos>(entity =>
@@ -533,6 +608,10 @@ namespace HPHrisPayroll.API.Models
                     .HasMaxLength(200)
                     .IsUnicode(false);
 
+                entity.Property(e => e.CurrentStore)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.DateCreated)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
@@ -540,7 +619,6 @@ namespace HPHrisPayroll.API.Models
                 entity.Property(e => e.DateTimeUpdated).HasColumnType("datetime");
 
                 entity.Property(e => e.DeptCode)
-                    .IsRequired()
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
@@ -619,10 +697,14 @@ namespace HPHrisPayroll.API.Models
                     .HasForeignKey(d => d.CompanyCode)
                     .HasConstraintName("FK_Employees_Companies");
 
+                entity.HasOne(d => d.CurrentStoreNavigation)
+                    .WithMany(p => p.Employees)
+                    .HasForeignKey(d => d.CurrentStore)
+                    .HasConstraintName("FK_Employees_Stores");
+
                 entity.HasOne(d => d.DeptCodeNavigation)
                     .WithMany(p => p.Employees)
                     .HasForeignKey(d => d.DeptCode)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Employees_Departments");
 
                 entity.HasOne(d => d.EmployeeStatusCodeNavigation)
@@ -881,6 +963,35 @@ namespace HPHrisPayroll.API.Models
                 entity.Property(e => e.EffectiveDateFrom).HasColumnType("datetime");
 
                 entity.Property(e => e.EffectiveDateTo).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<Stores>(entity =>
+            {
+                entity.HasKey(e => e.StoreCode);
+
+                entity.Property(e => e.StoreCode)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.CompanyCode)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreatedBy)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DateCreated)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.StoreName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<TaxStatus>(entity =>
